@@ -1,0 +1,16 @@
+rules_version = '2';
+// Solo los usuarios de la liga pueden leer y escribir.
+// Reemplazá los ejemplos por los usuarios reales en la consola de Firebase
+// (usuario@<EMAIL_DOMAIN>, ver src/store/firebase.js). No los subas al repo.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function esJugador() {
+      return request.auth != null && request.auth.token.email in [
+        'jugador1@example.com', 'jugador2@example.com', 'jugador3@example.com', 'jugador4@example.com'
+      ];
+    }
+    match /{document=**} {
+      allow read, write: if esJugador();
+    }
+  }
+}
